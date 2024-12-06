@@ -8,6 +8,7 @@ import {
     StyleSheet,
     Text,
     TouchableOpacity,
+    View,
 } from 'react-native';
 import image6 from './assets/images/6.jpg';
 import image7 from './assets/images/7.jpg';
@@ -71,24 +72,26 @@ function MainScreen(): React.JSX.Element {
                     </TouchableOpacity>
                 </Animated.View>
             ) : (
-                <FlatList
-                    data={imageCollection}
-                    keyExtractor={(item, index) => index.toString()}
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={{ paddingHorizontal: CARD_SPACING }}
-                    snapToInterval={CARD_WIDTH + CARD_SPACING}
-                    decelerationRate="fast"
-                    renderItem={({ item, index }) => (
-                        <TouchableOpacity onPress={() => onCardPress(item)}>
-                            <RenderItem index={index} data={item} />;
-                        </TouchableOpacity>
-                    )}
-                    onScroll={(event) => {
-                        scrollX.value = event.nativeEvent.contentOffset.x;
-                    }}
-                    scrollEventThrottle={16}
-                />
+                <View style={styles.front}>
+                    <FlatList
+                        data={imageCollection}
+                        keyExtractor={(item, index) => index.toString()}
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        contentContainerStyle={{ paddingHorizontal: CARD_SPACING }}
+                        snapToInterval={CARD_WIDTH + CARD_SPACING}
+                        decelerationRate="fast"
+                        renderItem={({ item, index }) => (
+                            <TouchableOpacity onPress={() => onCardPress(item)}>
+                                <RenderItem index={index} data={item} />;
+                            </TouchableOpacity>
+                        )}
+                        onScroll={(event) => {
+                            scrollX.value = event.nativeEvent.contentOffset.x;
+                        }}
+                        scrollEventThrottle={16}
+                    />
+                </View>
             )}
         </SafeAreaView>
     );
@@ -96,13 +99,22 @@ function MainScreen(): React.JSX.Element {
 
 const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: '#fff' },
+    front: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: height,
+    },
     card: {
         width: CARD_WIDTH,
         marginHorizontal: CARD_SPACING / 2,
         alignItems: 'center',
         justifyContent: 'center',
+        marginTop: height * 0.25,
+        borderWidth: 0.8,
+        borderColor: 'gray',
+        borderRadius: 10,
     },
-    image: { width: '100%', height: 200, borderRadius: 10 },
+    image: { width: '100%', height: 400, borderRadius: 10 },
     fullScreenCard: {
         flex: 1,
         justifyContent: 'center',
@@ -111,11 +123,11 @@ const styles = StyleSheet.create({
     },
     fullImage: {
         width: width * 0.9,
-        height: height * 0.7,
+        height: height * 0.9,
         borderRadius: 10,
         resizeMode: 'contain',
     },
-    close: {color: 'yellow', fontWeight: 'bold'},
+    close: { color: 'yellow', fontWeight: 'bold' },
 });
 
 export default MainScreen;

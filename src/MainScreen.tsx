@@ -4,7 +4,6 @@ import {
     FlatList,
     Image,
     SafeAreaView,
-    StyleSheet,
     Text,
     TouchableOpacity,
     View,
@@ -16,10 +15,11 @@ import image7 from './assets/images/7.jpg';
 import image8 from './assets/images/8.jpg';
 import image9 from './assets/images/9.jpg';
 import image10 from './assets/images/10.jpg';
+import { globalStyle } from './globalStyle';
 
 const imageCollection = [image6, image7, image8, image9, image10];
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 const CARD_WIDTH = width * 0.7;
 const CARD_SPACING = 20;
 
@@ -67,23 +67,23 @@ function MainScreen(): React.JSX.Element {
         });
 
         return (
-            <Animated.View style={[styles.card, animatedStyle]} key={index}>
-                <Image source={data} resizeMethod="resize" style={styles.image} />
+            <Animated.View style={[globalStyle.card, {width: CARD_WIDTH, marginHorizontal: CARD_SPACING / 2}, animatedStyle]} key={index}>
+                <Image source={data} resizeMethod="resize" style={globalStyle.image} />
             </Animated.View>
         );
     };
 
     return (
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={globalStyle.container}>
             {selectedCard ? (
-                <Animated.View style={[styles.fullScreenCard]}>
-                    <Image source={selectedCard} style={styles.fullImage} />
+                <Animated.View style={[globalStyle.fullScreenCard]}>
+                    <Image source={selectedCard} style={globalStyle.fullImage} />
                     <TouchableOpacity onPress={closeCard}>
-                        <Text style={styles.close}>Close</Text>
+                        <Text style={globalStyle.close}>Close</Text>
                     </TouchableOpacity>
                 </Animated.View>
             ) : (
-                <View style={styles.front}>
+                <View style={globalStyle.front}>
                     <FlatList
                         ref={flatListRef}
                         data={imageCollection}
@@ -109,38 +109,5 @@ function MainScreen(): React.JSX.Element {
         </SafeAreaView>
     );
 }
-
-const styles = StyleSheet.create({
-    container: { flex: 1, backgroundColor: '#fff' },
-    front: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: height,
-    },
-    card: {
-        width: CARD_WIDTH,
-        marginHorizontal: CARD_SPACING / 2,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginTop: height * 0.25,
-        borderWidth: 0.8,
-        borderColor: 'gray',
-        borderRadius: 10,
-    },
-    image: { width: '100%', height: 400, borderRadius: 10 },
-    fullScreenCard: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(0,0,0,0.8)',
-    },
-    fullImage: {
-        width: width * 0.9,
-        height: height * 0.9,
-        borderRadius: 10,
-        resizeMode: 'contain',
-    },
-    close: { color: 'yellow', fontWeight: 'bold' },
-});
 
 export default MainScreen;
